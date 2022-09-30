@@ -41,9 +41,18 @@ def logout():
     session.pop('usuario', None)
     return redirect(url_for('index'))
 
+
+@app.route('/test')
+def test():
+    print (url_for('static', filename='css/si1.css'), file=sys.stderr)
+    catalogue_data = open(os.path.join(app.root_path,'catalogue/catalogue.json'), encoding="utf-8").read()
+    catalogue = json.loads(catalogue_data)
+    return render_template('test.html', title = "Home", movies=catalogue['peliculas'])
+
 @app.route('/cart')
 def cart():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
     catalogue_data = open(os.path.join(app.root_path,'catalogue/catalogue.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
     return render_template('cart.html', title = "Home", movies=catalogue['peliculas'])
+
