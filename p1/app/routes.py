@@ -11,7 +11,7 @@ import sys
 @app.route('/index')
 def index():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
-    catalogue_data = open(os.path.join(app.root_path,'catalogue/catalogue.json'), encoding="utf-8").read()
+    catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
     return render_template('index.html', title = "Home", movies=catalogue['peliculas'])
 
@@ -42,17 +42,36 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/test')
-def test():
-    print (url_for('static', filename='css/si1.css'), file=sys.stderr)
-    catalogue_data = open(os.path.join(app.root_path,'catalogue/catalogue.json'), encoding="utf-8").read()
+@app.route('/seeker', methods=['GET', 'POST'])
+def seeker():
+
+    catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
-    return render_template('test.html', title = "Home", movies=catalogue['peliculas'])
+     # doc sobre request object en http://flask.pocoo.org/docs/1.0/api/#incoming-request-data
+    if 'search' in request.form:
+
+        catalogue_search ={}
+
+        
+        catalogue_search['peliculas'] ={}
+
+        catalogue_search['peliculas'].clear
+
+        for i in catalogue['peliculas']:
+            catalogue_search['peliculas'] = i
+        
+
+
+        return render_template('seeker.html', title = "Film Search", movies=json.dumps(catalogue_search['peliculas'], False))
+
+    else:
+
+        return render_template('seeker.html', title = "Film Search")
 
 @app.route('/cart')
 def cart():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
-    catalogue_data = open(os.path.join(app.root_path,'catalogue/catalogue.json'), encoding="utf-8").read()
+    catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
     return render_template('cart.html', title = "Home", movies=catalogue['peliculas'])
 
