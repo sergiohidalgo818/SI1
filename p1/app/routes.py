@@ -47,22 +47,30 @@ def seeker():
 
     catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
+
+    #catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
+    #catalogue = json.loads(catalogue_data)
+
      # doc sobre request object en http://flask.pocoo.org/docs/1.0/api/#incoming-request-data
     if 'search' in request.form:
 
-        catalogue_search ={}
+    
 
+        list_search = list()
         
-        catalogue_search['peliculas'] ={}
-
-        catalogue_search['peliculas'].clear
 
         for i in catalogue['peliculas']:
-            catalogue_search['peliculas'] = i
+            if (request.form['search'].casefold() == str(i['titulo']).casefold() or 
+            request.form['search'].casefold() == str(i['director']).casefold()):
+                list_search.append(i)
+
+
+
         
 
 
-        return render_template('seeker.html', title = "Film Search", movies=json.dumps(catalogue_search['peliculas'], False))
+        #return render_template('seeker.html', title = "Film Search", movies=json.dumps(catalogue_search, indent = 4))
+        return render_template('seeker.html', title = "Film Search", movies=list_search)
 
     else:
 
