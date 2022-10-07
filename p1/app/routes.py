@@ -47,35 +47,37 @@ def seeker():
 
     catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
-
-    #catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
-    #catalogue = json.loads(catalogue_data)
-
-     # doc sobre request object en http://flask.pocoo.org/docs/1.0/api/#incoming-request-data
-    if 'search' in request.form:
-
     
+     # doc sobre request object en http://flask.pocoo.org/docs/1.0/api/#incoming-request-data
 
-        list_search = list()
-        
+    list_search = list()
 
-        for i in catalogue['peliculas']:
-            if (request.form['search'].casefold() == str(i['titulo']).casefold() or 
-            request.form['search'].casefold() == str(i['director']).casefold()):
-                list_search.append(i)
+    if request.form['genre'] == str("all"):
+            if 'search' in request.form and request.form['search'] != '':
 
-
-
-        
-
-
-        #return render_template('seeker.html', title = "Film Search", movies=json.dumps(catalogue_search, indent = 4))
-        return render_template('seeker.html', title = "Film Search", movies=list_search)
-
+                for i in catalogue['peliculas']:
+                    if (request.form['search'].casefold() == str(i['titulo']).casefold() or 
+                        request.form['search'].casefold() == str(i['director']).casefold()):
+                        list_search.append(i)
+            else:
+                return render_template('seeker.html', title = "Film Search", movies=catalogue['peliculas'])
     else:
+                if 'search' in request.form and request.form['search'] != '':
+                    for i in catalogue['peliculas']:
+                        if ((request.form['search'].casefold() == str(i['titulo']).casefold() or 
+                            request.form['search'].casefold() == str(i['director']).casefold()) and
+                            request.form['genre'].casefold() == str(i['categoria']).casefold()):
+                            list_search.append(i)
 
-        return render_template('seeker.html', title = "Film Search")
+                else:
+                    for i in catalogue['peliculas']:
+                        if (request.form['genre'].casefold() == str(i['categoria']).casefold()):
+                                list_search.append(i)
 
+
+    return render_template('seeker.html', title = "Film Search", movies=list_search)
+
+  
 @app.route('/cart')
 def cart():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
