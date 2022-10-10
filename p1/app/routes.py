@@ -52,8 +52,11 @@ def seeker():
 
     list_search = list()
 
+    'genre' in request.form
+    'search' in request.form
+
     if request.form['genre'] == str("all"):
-            if 'search' in request.form and request.form['search'] != '':
+            if request.form['search'] != '':
 
                 for i in catalogue['peliculas']:
                     if (request.form['search'].casefold() == str(i['titulo']).casefold() or 
@@ -62,7 +65,7 @@ def seeker():
             else:
                 return render_template('seeker.html', title = "Film Search", movies=catalogue['peliculas'])
     else:
-                if 'search' in request.form and request.form['search'] != '':
+                if request.form['search'] != '':
                     for i in catalogue['peliculas']:
                         if ((request.form['search'].casefold() == str(i['titulo']).casefold() or 
                             request.form['search'].casefold() == str(i['director']).casefold()) and
