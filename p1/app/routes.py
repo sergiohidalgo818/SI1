@@ -7,13 +7,19 @@ import json
 import os
 import sys
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
     catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
 
+    if 'purchase' in request.form:
+        cart_data = open(os.path.join(app.root_path,'catalogue/cart.json'), encoding="utf-8").read()
+        cart = json.loads(cart_data)
+        #if cart['peliculas'] = int(request.form['purchase']):
+    
+  
     
     return render_template('index.html', title = "Home", movies=catalogue['peliculas'])
 
@@ -83,10 +89,37 @@ def seeker():
     return render_template('seeker.html', title = "Film Search", movies=list_search)
 
   
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST'])
 def cart():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
+    cart_data = open(os.path.join(app.root_path,'catalogue/cart.json'), encoding="utf-8").read()
+    cart = json.loads(cart_data)
+   
     catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
-    return render_template('cart.html', title = "Home", movies=catalogue['peliculas'])
+
+    list_search = list()
+
+
+    for i in cart['peliculas']:
+        for j in catalogue['peliculas']:
+            if i['id'] == j['id']:
+                list_search.append(j)
+
+
+    if 'delete' in request.form:
+        for i in list_search:
+            if i['id'] == int(request.form['delete']):
+                list_search.remove(i)
+    
+     
+        return render_template('cart.html', title = "Home", movies=list_search)
+
+
+
+
+    
+
+
+    return render_template('cart.html', title = "Home", movies=list_search)
 
