@@ -7,7 +7,12 @@
 {% block content %}
     <ul>
     {% for item in movies %}
-    <li>{{ item.titulo }}</li>
+    <br><br/>
+    <div><t3>{{ item.titulo }}</t3></div>
+    <img src="{{url_for('static', filename= item.poster )}}">
+    <form action="" method="post">
+        <button name="purchase" value="purchase">Purchase</button>
+    </form>
     {% endfor %}
     <ul>
         <aside>
