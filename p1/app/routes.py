@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from doctest import testfile
 from app import app
 from flask import render_template, request, url_for, redirect, session
 import json
 import os
 import sys
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -17,7 +19,22 @@ def index():
     if 'purchase' in request.form:
         cart_data = open(os.path.join(app.root_path,'catalogue/cart.json'), encoding="utf-8").read()
         cart = json.loads(cart_data)
-        #if cart['peliculas'] = int(request.form['purchase']):
+       
+
+
+        cart_dict = dict(cart)
+
+        aux_id = dict()
+
+        aux_id['id'] = int(request.form['purchase'])
+
+        cart_dict['peliculas'] += [aux_id]
+
+
+        cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
+        cart_f.write(json.dumps(cart_dict, indent=4))
+        cart_f.close()
+        
     
   
     
@@ -98,28 +115,37 @@ def cart():
     catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
 
-    list_search = list()
+    list_catalogue = list()
+    list_cart = list()
 
 
     for i in cart['peliculas']:
         for j in catalogue['peliculas']:
             if i['id'] == j['id']:
-                list_search.append(j)
-
+                list_catalogue.append(j)
+                list_cart.append(i)
+    
 
     if 'delete' in request.form:
-        for i in list_search:
+        for i in list_catalogue:
             if i['id'] == int(request.form['delete']):
-                list_search.remove(i)
+                list_catalogue.remove(i)
+
+           
+        for j in list_cart:
+            if j['id'] == int(request.form['delete']):
+               list_cart.remove(j)
+
+
+
+        dict_cart = dict()
+        dict_cart['peliculas'] = list_cart
+
+        cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
+        cart_f.write(json.dumps(dict_cart, indent=4))
+        cart_f.close()
+        
+        
     
-     
-        return render_template('cart.html', title = "Home", movies=list_search)
-
-
-
-
-    
-
-
-    return render_template('cart.html', title = "Home", movies=list_search)
+    return render_template('cart.html', title = "Home", movies=list_catalogue)
 

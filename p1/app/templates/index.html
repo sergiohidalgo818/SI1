@@ -9,9 +9,9 @@
     {% for item in movies %}
     <br><br/>
     <div><t3>{{ item.titulo }}</t3></div>
-    <img src="{{url_for('static', filename= item.poster )}}">
+    <img src="{{url_for('static', filename= item.poster )}}" width="400" height="500">
     <form action="" method="post">
-        <button name="purchase" value="purchase">Purchase</button>
+        <button name="purchase" value="{{ item.id }}">Add to cart</button>
     </form>
     {% endfor %}
     <ul>
