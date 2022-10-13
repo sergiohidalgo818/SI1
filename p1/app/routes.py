@@ -54,7 +54,29 @@ def index():
         cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
         cart_f.write(json.dumps(cart_dict, indent=4))
         cart_f.close()
-  
+    
+    if 'submit' in request.form:
+        if 'estrellas' in request.form:
+            
+            detail =list()
+
+
+            for i in catalogue['peliculas']:
+                if i['id'] == int(request.form['submit']):
+                    puntuacion_aux = i['puntuacion'] * i['valoraciones']
+                    puntuacion_aux += int(request.form['estrellas'])
+                    i['valoraciones']+=1
+                    i['puntuacion'] = puntuacion_aux/i['valoraciones']
+                    detail.append(i)
+
+        
+            cart_f = open(os.path.join(app.root_path,'catalogue/inventario.json'), "w", encoding="utf-8")
+            cart_f.write(json.dumps(catalogue, indent=4))
+            cart_f.close()
+
+            return render_template('index.html', title = "Home", movies=catalogue['peliculas'])
+
+
     
     return render_template('index.html', title = "Home", movies=catalogue['peliculas'])
 
@@ -65,15 +87,16 @@ def login():
         # aqui se deberia validar con fichero .dat del usuario
         if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == True:
             
-
-
-            
             if 'password' in request.form:
                 
                 user = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), encoding="utf-8").read()
                 user_info = json.loads(user)
                
-                if request.form['password'] == user_info['password']:
+
+                contra = hashlib.sha3_384()
+                contra.update(request.form['password'].encode('utf-8'))
+                                           
+                if contra.hexdigest() == user_info['password']:
                 
                     session['usuario'] = request.form['username']
                     session.modified=True
@@ -234,7 +257,7 @@ def register():
                                             contra = hashlib.sha3_384()
                                             contra.update(request.form['password'].encode('utf-8'))
                                            
-                                            dict_user['password'] = request.form['password']
+                                            dict_user['password'] = contra.hexdigest()
                                             
 
                                             if 'credit_card' in request.form:

@@ -1,3 +1,7 @@
 {
-    "peliculas": []
+    "peliculas": [
+        {
+            "id": 1
+        }
+    ]
 }

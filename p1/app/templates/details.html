@@ -33,6 +33,27 @@
  
     </aside>
 
+    <br>
+
+    <label>Valoraciones: {{ item.valoraciones }}</label>
+    <label>   Puntuacion: {{ item.puntuacion }}</label>
+
+
+    <form action="" method="post">
+          <input id="estrella1" type="radio" name="estrellas" value="1">
+            <stars><label for="estrella1">★</label></stars>
+            <input id="estrella2" type="radio" name="estrellas" value="2">
+            <stars><label for="estrella2">★</label></stars>
+            <input id="estrella3" type="radio" name="estrellas" value="3">
+            <stars><label for="estrella3">★</label></stars>
+            <input id="estrella4" type="radio" name="estrellas" value="4">
+            <stars><label for="estrella4">★</label></stars>
+            <stars><input id="estrella5" type="radio" name="estrellas" value="5">
+            <stars><label for="estrella5">★</label></stars>
+            <button name="submit" value="{{ item.id }}">Submit</button>
+    </form>
+
+
 
     <form action="" method="post">
         <button name="add_to_cart" value="{{ item.id }}">Add to cart</button>
