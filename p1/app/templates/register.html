@@ -9,16 +9,47 @@
     <form action="" method="post" novalidate>
         <label><b>Username </b></label>
         <input name="username" type="text" placeholder="Enter username">
+        
         <label><b>Email </b></label>
         <input name="email" type="text" placeholder="Enter email">
+        
         <label><b>Adress </b></label>
         <input name="adress" type="text" placeholder="Enter adress">
+        
         <br><br>
-        <label><b> Password</b></label>
-        <input name="password" type="password" placeholder="Enter password">
+        <contra>
+        <label><b>Password</b></label>
+        <input placeholder="Enter password" id="password" name="password" type="password" oninput="passwordStrenght()"/>
+        <p id="strength"></p>
+        <script>
+            function passwordStrenght() {
+            var x = document.getElementById("password").value;
+                if (x.length<=6) {
+                    document.getElementById("strength").innerHTML = "Strength: Low";
+                }
+                else if (x.length <= 12)
+                {
+                    document.getElementById("strength").innerHTML = "Strength: Medium";
+                }
+                else if (x.length >= 12 && (/[0-9]/.test(x) && (/[A-Z]/.test(x))))
+                {
+                    document.getElementById("strength").innerHTML = "Strength: Very Hard";
+                }
+                else if (x.length >= 12 && (/[A-Z]/.test(x)))
+                {
+                    document.getElementById("strength").innerHTML = "Strength: Hard";
+                }
+                
+            }
+        </script>
+        </contra>
+        
+        <label><b>&nbsp Confirm Password</b></label>
         <input name="confirm_password" type="password" placeholder="Confirm password">
         <label><b> Credit card</b></label>
         <input name="credit_card" type="text" placeholder="Enter credit card">
+        
         <input type="submit" value="Register">
+        
     </form>
 {% endblock %}

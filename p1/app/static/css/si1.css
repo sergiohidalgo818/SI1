@@ -6,3 +6,5 @@ t2{ position: absolute;  top: 145px; right: -1000px; width: 1900px; height: 100p
 t3{ font-size: 20pt;}
 
 stars{ color:rgb(243, 251, 1);}
+
+contra{float: left;}
