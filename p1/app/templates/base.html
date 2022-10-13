@@ -9,9 +9,10 @@
 <body>
     <div><t1>VideoClub:</t1><br><br/>
         <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('cart') }}">Cart</a>
         {% if not session['usuario'] %}
         <a href="{{ url_for('login') }}">Sign In</a></div>
-        <a href="{{ url_for('cart') }}">Cart</a>
+        <a href="{{ url_for('register') }}">Register</a></div>
         <span>Usuario: An&oacutenimo</span>
         {% else %}
         <span>Usuario: {{ session['usuario'] }}</span>

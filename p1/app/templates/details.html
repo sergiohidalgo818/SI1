@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock%}
+
+{% block content %}
+
+<ul>
+    {% for item in movies %}
+    <div><t3>{{ item.titulo }}</t3></div>
+    <a name="imgen" > <img src="{{url_for('static', filename= item.poster )}}" width="400" height="500"/></a>
+    
+    <div>Fecha: <t3>{{ item.año }}</t3></div>
+    <div>Categoría: <t3>{{ item.categoria }}</t3></div>
+    <div>Director: <t3>{{ item.director }}</t3></div>
+    <div>Precio: <t3>{{ item.precio }}</t3></div>
+    
+
+    
+    <aside>
+        <t2>
+            <div>Actores: </div>
+            {% for actor in item.actores %}
+            <div><t3>{{ actor.nombre }} : {{ actor.personaje }} 
+                <div>
+                <img src="{{url_for('static', filename= actor.foto )}}" width="300" height="200"/>
+                </div>
+            </t3></div>
+            
+            {% endfor %}
+        </t2>
+ 
+    </aside>
+
+
+    <form action="" method="post">
+        <button name="add_to_cart" value="{{ item.id }}">Add to cart</button>
+    </form>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

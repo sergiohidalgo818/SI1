@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+    <form action="" method="post" novalidate>
+        <label><b>Film Genre </b></label>
+        <select name="genre" type="select">
+            <option value="all">All</option>
+            <option value="Aventura">Adventure</option>
+            <option value="Terror">Terror</option>
+            <option value="Fantasia">Fantasía</option>
+            <option value="Accion">Acción</option>
+        </select>
+        <label><b>Film Search </b></label>
+            <input name="search" type="text" placeholder="Enter filmname or director"> </input>
+    </form>
+
+
+    <ul>
+        {% for item in movies %}
+        <li>{{ item.titulo }}</li>
+        {% endfor %}
+    </ul>
+
+
+</html>

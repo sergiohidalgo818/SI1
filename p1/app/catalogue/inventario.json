@@ -1,0 +1,121 @@
+{ "peliculas": 
+  [ 
+    { 
+			"id": 1,
+			"titulo": "La guerra de las galaxias: Episodio 1-La amenaza fantasma",
+      "poster": "img/guerraepisodio1.jpg",
+      "director": "George Lucas",
+      "precio": 18.99,
+      "categoria": "Aventura",
+      "año": 1999,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    },
+
+    { 
+			"id": 2,
+			"titulo": "Kika Superbruja y el libro de hechizos ",
+      "poster": "img/kikasuperbruja.jpg",
+      "director": "Stefan Ruzowitzky",
+      "precio": 18.99,
+      "categoria": "Fantasia",
+      "año": 2009,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    },
+
+    { 
+			"id": 3,
+			"titulo": "Kill Bill 1",
+      "poster": "img/killbill1.jpg",
+      "director": "Quentin Tarantino",
+      "precio": 18.99,
+      "categoria": "Accion",
+      "año": 2003,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    },
+
+    { 
+			"id": 4,
+			"titulo": "Kill Bill 2",
+      "poster": "img/killbill2.jpg",
+      "director": "Quentin Tarantino",
+      "precio": 18.99,
+      "categoria": "Accion",
+      "año": 2004,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    },
+
+    { 
+			"id": 5,
+			"titulo": "Coraline",
+      "poster": "img/coraline.jpg",
+      "director": "Henry Selick",
+      "precio": 18.99,
+      "categoria": "Terror",
+      "año": 2009,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    },
+
+    { 
+			"id": 6,
+			"titulo": "La Novia Cadaver",
+      "poster": "img/lanoviacadaver.jpg",
+      "director": "Tim Burton",
+      "precio": 18.99,
+      "categoria": "Terror",
+      "año": 2005,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    },
+    { 
+			"id": 7,
+			"titulo": "Barbie y las 12 princesas bailarinas",
+      "poster": "img/barbieylas12.jpg",
+      "director": "Greg Richardson",
+      "precio": 18.99,
+      "categoria": "Fantasía",
+      "año": 1999,
+      "actores": 
+      [
+        { "nombre": "Jake Lloyd",
+          "personaje": "Anakin Skywalker",
+          "foto": "img/anakin.jpg"
+        }
+      ]
+    }
+  ]
+}

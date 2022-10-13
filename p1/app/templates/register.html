@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock%}
+
+{% block content %}
+    <h1>Register</h1>
+    <form action="" method="post" novalidate>
+        <label><b>Username </b></label>
+        <input name="username" type="text" placeholder="Enter username">
+        <label><b>Email </b></label>
+        <input name="email" type="text" placeholder="Enter email">
+        <label><b>Adress </b></label>
+        <input name="adress" type="text" placeholder="Enter adress">
+        <br><br>
+        <label><b> Password</b></label>
+        <input name="password" type="password" placeholder="Enter password">
+        <input name="confirm_password" type="password" placeholder="Confirm password">
+        <label><b> Credit card</b></label>
+        <input name="credit_card" type="text" placeholder="Enter credit card">
+        <input type="submit" value="Register">
+    </form>
+{% endblock %}
