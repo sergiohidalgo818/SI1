@@ -1,7 +1,8 @@
 {
     "peliculas": [
         {
-            "id": 1
+            "id": 1,
+            "cantidad": 1
         }
     ]
 }

@@ -9,7 +9,7 @@ from doctest import testfile
 from pickle import FALSE
 import re
 from app import app
-from flask import render_template, request, url_for, redirect, session
+from flask import render_template, request, url_for, redirect, session, flash
 import json
 import os
 import sys
@@ -42,17 +42,24 @@ def index():
         cart_data = open(os.path.join(app.root_path,'catalogue/cart.json'), encoding="utf-8").read()
         cart = json.loads(cart_data)
     
-        cart_dict = dict(cart)
 
         aux_id = dict()
 
         aux_id['id'] = int(request.form['add_to_cart'])
+        aux_id['cantidad'] = 1
 
-        cart_dict['peliculas'] += [aux_id]
+        for i in cart['peliculas']:
+            if i['id'] == aux_id['id']:
+                aux_id['cantidad'] = 0
+                i['cantidad'] += 1
+
+        if aux_id['cantidad'] == 1:
+            cart['peliculas'] += [aux_id]
+            
 
 
         cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
-        cart_f.write(json.dumps(cart_dict, indent=4))
+        cart_f.write(json.dumps(cart, indent=4))
         cart_f.close()
     
     if 'submit' in request.form:
@@ -74,7 +81,8 @@ def index():
             cart_f.write(json.dumps(catalogue, indent=4))
             cart_f.close()
 
-            return render_template('index.html', title = "Home", movies=catalogue['peliculas'])
+            return render_template('details.html', title = "Details", movies=detail)
+
 
 
     
@@ -103,7 +111,10 @@ def login():
 
                     # se puede usar request.referrer para volver a la pagina desde la que se hizo login
                     return redirect(url_for('index'))
-
+                else:
+                    flash('Wrong password')
+        else:
+                flash('Wrong username')
             # aqui se le puede pasar como argumento un mensaje de login invalido
         return render_template('login.html', title = "Sign In")
     else:
@@ -175,20 +186,26 @@ def cart():
     for i in cart['peliculas']:
         for j in catalogue['peliculas']:
             if i['id'] == j['id']:
+                j['cantidad'] = i['cantidad']
                 list_catalogue.append(j)
                 list_cart.append(i)
     
 
     if 'delete' in request.form:
+
         for i in list_catalogue:
             if i['id'] == int(request.form['delete']):
-                list_catalogue.remove(i)
-
+                if i['cantidad'] == 1:
+                    list_catalogue.remove(i)
+                else:
+                    i['cantidad'] -= 1
            
         for j in list_cart:
             if j['id'] == int(request.form['delete']):
-               list_cart.remove(j)
-
+                if j['cantidad'] == 1:
+                    list_cart.remove(j)
+                else:
+                    j['cantidad'] -= 1
 
 
         dict_cart = dict()
@@ -197,10 +214,31 @@ def cart():
         cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
         cart_f.write(json.dumps(dict_cart, indent=4))
         cart_f.close()
-        
+
+        return render_template('cart.html', title = "Cart", movies=list_catalogue)
+
+    
+    if 'add' in request.form:
+       
+        aux_id = dict()
+
+        aux_id['id'] = int(request.form['add'])
+
+        for i in cart['peliculas']:
+            if i['id'] == aux_id['id']:
+                i['cantidad'] += 1
+
+
+        for i in list_catalogue:
+            if i['id'] == int(request.form['add']):
+                i['cantidad'] += 1
+
+        cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
+        cart_f.write(json.dumps(cart, indent=4))
+        cart_f.close()
         
     
-    return render_template('cart.html', title = "Home", movies=list_catalogue)
+    return render_template('cart.html', title = "Cart", movies=list_catalogue)
 
 
 @app.route('/details', methods=['GET', 'POST'])
@@ -227,12 +265,13 @@ def register():
                 or i == '$' or i == '%' or i == '^' or i == '&' or i == '*' or i == '('
                 or i == ')' or i == '<' or i == '>' or i == '?' or i == '/' or i == '\\'
                 or i == '|' or i == '}' or i =='{' or i =='~' or i==':' or i ==']'):
-                    return render_template('register.html', title = "Home")
+                    flash('Wrong username')
+                    return render_template('register.html', title = "Register")
 
             if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == True:
-                return render_template('register.html', title = "Home")
+                flash('Username already exists')
+                return render_template('register.html', title = "Register")
 
-            os.mkdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username']))
             
             dict_user['username'] = request.form['username']
 
@@ -266,15 +305,31 @@ def register():
                                                     dict_user['credit_card'] = request.form['credit_card']
                                                     
                                                     dict_user['saldo'] = random.randint(0, 50)
+                                                    
+                                                    os.mkdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username']))
 
                                                     user_f = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), "w", encoding="utf-8")
                                                     user_f.write(json.dumps(dict_user, indent=4))
                                                     user_f.close()
         
                                                     return render_template('index.html', title = "Home")
+                                                
+                                                else:
+                                                    flash('Invalid credit card')            
+                                        else:
+                                            flash('Passwords dont match')                                
+                                else:
+                                    flash('Short password')
+                        else:
+                            flash('Too long adress')
+
+                else:
+                    flash('Invalid email')
 
         else:            
-            return render_template('register.html', title = "Home")
+            flash('Short username')
+
+            return render_template('register.html', title = "Register")
         
 
-    return render_template('register.html', title = "Home")
+    return render_template('register.html', title = "Register")
