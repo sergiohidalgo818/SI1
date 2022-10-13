@@ -2,8 +2,9 @@ body {
     background-color: rgb(242, 108, 108)
 }
 t1{ font-size: 50pt;}
-t2{ position: absolute;  top: 145px; right: -1000px; width: 1900px; height: 100px; }
+t2{ position: absolute;  }
 t3{ font-size: 20pt;}
+t4{ position: absolute; top: 145px; right: -1000px; width: 1900px; height: 100px; }
 
 stars{ color:rgb(243, 251, 1);}
 
