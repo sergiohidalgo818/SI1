@@ -7,6 +7,7 @@
 {% block content %}
 <ul>
     {% for item in movies %}
+    {% if item.cantidad is defined %}
     <br><br />
     <div>
         <t3>{{ item.titulo }}</t3>
@@ -17,7 +18,10 @@
             <button name="add" value="{{ item.id }}">Add</button>
         </div>
     </form>
+
     <label> x<t3>{{ item.cantidad }} (Total: {{ item.cantidad * item.precio}})</t3> </label>
+    {% else %}
+    {% endif %}
 
     {% endfor %}
     <br><br>

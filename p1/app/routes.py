@@ -8,7 +8,7 @@ from curses.ascii import isalnum
 from doctest import testfile
 from pickle import FALSE
 import re
-
+from datetime import datetime
 from sqlalchemy import null
 from app import app
 from flask import render_template, request, url_for, redirect, session, flash
@@ -37,16 +37,16 @@ def index():
                 if request.form['search'] != '':
 
                     for i in catalogue['peliculas']:
-                        if (request.form['search'].casefold() == str(i['titulo']).casefold() or 
-                        request.form['search'].casefold() == str(i['director']).casefold()):
+                        if (request.form['search'].casefold() in str(i['titulo']).casefold() or 
+                        request.form['search'].casefold() in str(i['director']).casefold()):
                             list_search.append(i)
                 else:
                     return render_template('index.html', title = "Film Search", movies=catalogue['peliculas'])
             else:
                     if request.form['search'] != '':
                         for i in catalogue['peliculas']:
-                            if ((request.form['search'].casefold() == str(i['titulo']).casefold() or 
-                                request.form['search'].casefold() == str(i['director']).casefold()) and
+                            if ((request.form['search'].casefold() in str(i['titulo']).casefold() or 
+                                request.form['search'].casefold() in str(i['director']).casefold()) and
                                 request.form['genre'].casefold() == str(i['categoria']).casefold()):
                                 list_search.append(i)
                     else:
@@ -73,9 +73,12 @@ def index():
     #añadir al carrito
     if 'add_to_cart' in request.form:
         
-        cart_data = open(os.path.join(app.root_path,'catalogue/cart.json'), encoding="utf-8").read()
-        cart = json.loads(cart_data)
-    
+        if not session.get('carrito'):
+            dict_aux = dict()
+            dict_aux['peliculas'] = []
+            session['carrito'] = dict_aux
+
+        cart = session['carrito']
 
         aux_id = dict()
 
@@ -91,10 +94,7 @@ def index():
             cart['peliculas'] += [aux_id]
             
 
-
-        cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
-        cart_f.write(json.dumps(cart, indent=4))
-        cart_f.close()
+        session['carrito'] = cart
         
 
     
@@ -171,8 +171,14 @@ def logout():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
     print (url_for('static', filename='css/si1.css'), file=sys.stderr)
-    cart_data = open(os.path.join(app.root_path,'catalogue/cart.json'), encoding="utf-8").read()
-    cart = json.loads(cart_data)
+    
+    if not session.get('carrito'):
+        dict_aux = dict()
+        dict_aux['peliculas'] = []
+        session['carrito'] = dict_aux
+
+
+    cart = session['carrito']
    
     catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
@@ -209,9 +215,7 @@ def cart():
         dict_cart = dict()
         dict_cart['peliculas'] = list_cart
 
-        cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
-        cart_f.write(json.dumps(dict_cart, indent=4))
-        cart_f.close()
+        session['carrito'] = dict_cart
 
         return render_template('cart.html', title = "Cart", movies=list_catalogue)
 
@@ -231,9 +235,7 @@ def cart():
             if i['id'] == int(request.form['add']):
                 i['cantidad'] += 1
 
-        cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
-        cart_f.write(json.dumps(cart, indent=4))
-        cart_f.close()
+        session['carrito'] = cart
 
     if 'purchase' in request.form:
 
@@ -246,39 +248,39 @@ def cart():
                
         if user_info['saldo'] < total:
             flash('Saldo insuficiente')
-        if total <= 0:
-            flash('No hay elementos en el carrito')
-        else:
-            user_info['saldo'] -= total        
+        else: 
+            if (total <= 0):
+                flash('No hay elementos en el carrito')
+            else:
+                user_info['saldo'] -= total        
 
-            user_f = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/userdata'), "w", encoding="utf-8")
-            user_f.write(json.dumps(user_info, indent=4))
-            user_f.close()
+                user_f = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/userdata'), "w", encoding="utf-8")
+                user_f.write(json.dumps(user_info, indent=4))
+                user_f.close()
            
-            compras = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
-            compras_info = json.loads(compras)
+                compras = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
+                compras_info = json.loads(compras)
 
 
-            aux_list = list()
+                aux_list = list()
 
             
-            for i in list_catalogue:
-                aux_list.append(i)
+                for i in list_catalogue:
+                    aux_list.append(i)
 
-            aux_list.append("Total: " + str(total))
+                aux_list.append("Total: " + str(total))
 
-            compras_info += [aux_list]
+                compras_info['compras'] += [aux_list]
 
-            compras_f = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), "w", encoding="utf-8")
-            compras_f.write(json.dumps(compras_info, indent=4))
-            compras_f.close()
+                compras_f = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), "w", encoding="utf-8")
+                compras_f.write(json.dumps(compras_info, indent=4))
+                compras_f.close()
 
-            dict_cart = dict()
-            dict_cart['peliculas'] = []
+                session['carrito'] = {"peliculas": []}
+                return render_template('cart.html', title = "Cart",movies= session['carrito'])
 
-            cart_f = open(os.path.join(app.root_path,'catalogue/cart.json'), "w", encoding="utf-8")
-            cart_f.write(json.dumps(dict_cart, indent=4))
-            cart_f.close()
+
+    
 
             
         
@@ -289,7 +291,7 @@ def cart():
 @app.route('/details', methods=['GET', 'POST'])
 def details():
 
-    return render_template('details.html', title = "Home")
+    return render_template('details.html', title = "Details")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
