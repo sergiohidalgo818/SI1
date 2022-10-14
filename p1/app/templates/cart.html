@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ title }}
+{{ title }}
 {% endblock%}
 
 {% block content %}
-    <ul>
+<ul>
     {% for item in movies %}
-    <br><br/>
-    <div><t3>{{ item.titulo }}</t3></div>
-    <img src="{{url_for('static', filename= item.poster )}}"  width="400" height="500">
+    <br><br />
+    <div>
+        <t3>{{ item.titulo }}</t3>
+    </div>
+    <img src="{{url_for('static', filename= item.poster )}}" width="400" height="500">
     <form action="" method="post">
         <div><button name="delete" value="{{ item.id }}">Delete</button>
             <button name="add" value="{{ item.id }}">Add</button>
         </div>
     </form>
-    <label> x<t4>{{ item.cantidad }}  (Total: {{ item.cantidad *  item.precio}})</t4> </label>
-    <h4></h4>
+    <label> x<t3>{{ item.cantidad }} (Total: {{ item.cantidad * item.precio}})</t3> </label>
 
-
-    
-   
     {% endfor %}
-    <form>
-        <br>
-        <div><button name="purchase" value="val">Purchase</button></div>
-
+    <br><br>
+    <form action="" method="post">
+        {% if not session['usuario'] %}
+        <button name="purchase" title="You need to be loged in" value="purchase" disabled="true">Purchase</button>
+        {% else %}
+        <button name="purchase" value="purchase">Purchase</button>
+        {% endif%}
+        
     </form>
-
-
-    <ul>
+</ul>
 {% endblock %}
