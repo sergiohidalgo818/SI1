@@ -17,6 +17,7 @@ import os
 import sys
 import hashlib
 import random
+from datetime import date
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -114,9 +115,9 @@ def index():
                     detail.append(i)
 
         
-            cart_f = open(os.path.join(app.root_path,'catalogue/inventario.json'), "w", encoding="utf-8")
-            cart_f.write(json.dumps(catalogue, indent=4))
-            cart_f.close()
+            catalogue_f = open(os.path.join(app.root_path,'catalogue/inventario.json'), "w", encoding="utf-8")
+            catalogue_f.write(json.dumps(catalogue, indent=4))
+            catalogue_f.close()
 
             return render_template('details.html', title = "Details", movies=detail)
 
@@ -264,11 +265,16 @@ def cart():
 
                 aux_list = list()
 
+                aux_dict = dict()
+
+                aux_dict['total'] = total
+                aux_dict['fecha'] = date.today().strftime("%m/%d/%Y, %H:%M:%S")
+                
+                aux_list.append(aux_dict)
             
                 for i in list_catalogue:
                     aux_list.append(i)
-
-                aux_list.append("Total: " + str(total))
+        
 
                 compras_info['compras'] += [aux_list]
 
@@ -384,3 +390,10 @@ def register():
 
     return render_template('register.html', title = "Register")
         
+@app.route('/history', methods=['GET', 'POST'])
+def history():
+    if session.get('usuario'):
+        compras = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
+        compras_info = json.loads(compras)
+
+        return render_template('history.html', title = "History", compras = compras_info['compras'])

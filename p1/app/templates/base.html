@@ -18,6 +18,7 @@
         {% else %}
         <span>Usuario: {{ session['usuario'] }}</span>
         <a href="{{ url_for('logout') }}">Log out</a></div>
+        <a href="{{ url_for('history') }}">History of Purchases</a></div>
         {% endif%}
         
     {% block content%}

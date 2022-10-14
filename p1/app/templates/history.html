@@ -8,7 +8,7 @@
 <br><br>
 
 <t2>
-    
+
 </t2>
 
 
@@ -17,10 +17,25 @@
 
     {% for item in compras %}
     <br><br>
-    <div>{{ item.total }}</div>
-    
+    <t3><div><label>&nbsp Fecha: &nbsp</label>{{item.0.fecha}} <label>&nbsp Total: &nbsp</label> {{item.0.total}}</div>
+    </t3>    
+    <br>
+    {% for movie in item %}
+    {% if movie.titulo is defined %}
+    <div>
+        <t3>{{ movie.titulo }}</t3>
+    </div>
+    <img src="{{url_for('static', filename= movie.poster )}}" width="400" height="500" />
+    <div>
+        <t3><label>&nbsp Precio: &nbsp</label>{{movie.precio}} <label>&nbsp Cantidad: &nbsp</label> {{movie.cantidad}}
+        </t3>
+        <br><br>
+    </div>
+    {%else%}
+    {% endif %}
+    {% endfor %}
     {% endfor %}
 </ul>
 
 
-        {% endblock %}
+{% endblock %}
