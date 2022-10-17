@@ -10,8 +10,9 @@
 <body_menu>
 <ul class="navigation">
     {% for item in compras %}
+     
     
-        <li><a href="#">{{item.0.fecha}} <br><label>Total: &nbsp</label> {{item.0.total}}</a>
+        <li><a href="#">{{item.0.fecha}} <br><label>Total: {{item.0.total}} &nbsp</label> </a>
             <ul>
         {% for movie in item %}
         {% if movie.titulo is defined %}
@@ -42,5 +43,4 @@
     </script>
 
 </segmenth>
-
 {% endblock %}

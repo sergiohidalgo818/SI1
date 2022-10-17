@@ -238,11 +238,14 @@ def cart():
 
         session['carrito'] = cart
 
+        return render_template('cart.html', title = "Cart", movies=list_catalogue)
+
     if 'purchase' in request.form:
 
         total = 0
         for i in list_catalogue:
             total+=i['precio']*i['cantidad']
+
 
         user = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/userdata'), encoding="utf-8").read()
         user_info = json.loads(user)
@@ -267,7 +270,7 @@ def cart():
 
                 aux_dict = dict()
 
-                aux_dict['total'] = total
+                aux_dict['total'] = "{:.2f}".format(total)
                 aux_dict['fecha'] = date.today().strftime("%m/%d/%Y")
                 
                 aux_list.append(aux_dict)
@@ -302,12 +305,14 @@ def details():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 
+    oldmask = os.umask (0o777)
+
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
     dict_user = dict()
 
     if os.path.isdir(os.path.join(app.root_path,'../../../si1users')) == False:
-        os.mkdir(os.path.join(app.root_path,'../../../si1users'))
+        os.mkdir(os.path.join(app.root_path,'../../../si1users'), mode=0o777)
 
     if 'username' in request.form:
         if len(request.form['username']) >= 5:
@@ -357,7 +362,6 @@ def register():
                                                     
                                                     dict_user['saldo'] = random.randint(0, 50)
                                                     
-                                                    os.mkdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username']))
 
                                                     user_f = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), "w", encoding="utf-8")
                                                     user_f.write(json.dumps(dict_user, indent=4))
@@ -370,7 +374,7 @@ def register():
                                                     
                                                     user_f.write(json.dumps(dict_compras, indent=4))
                                                     user_f.close()
-        
+                                                    os.umask (oldmask)
                                                     return redirect(url_for('login'))
                                                 
                                                 else:
@@ -387,6 +391,8 @@ def register():
 
         else:            
             flash('Short username')
+
+    os.umask (oldmask)
 
     return render_template('register.html', title = "Register")
         
@@ -414,5 +420,3 @@ def history():
         compras_info = json.loads(compras)
 
         return render_template('history.html', title = "History", compras = compras_info['compras'])
-    
-    

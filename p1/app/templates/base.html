@@ -4,23 +4,25 @@
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}- VideoClub</title>
     <!-- Uso de url_for para obtener la ruta de elementos de la página -->
-    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/si1.css') }}/>
+    <link rel="stylesheet" type="text/css" href= {{ url_for('static', filename='css/si1.css' ) }}/>
 </head>
 
 <body>
-    <div><t1>VideoClub:</t1><br><br/>
-      <a href="{{ url_for('index') }}">Home</a>
+    <t1>VideoClub:</t1><br><br>
+      <a href="{{url_for('index')}}">Home</a>
       <br>
       <a href="{{ url_for('cart') }}">Cart</a>
       <br>
       {% if not session['usuario'] %}
       <a href="{{ url_for('login') }}">Sign In</a></div>
+      <br>  
       <a href="{{ url_for('register') }}">Register</a></div>
       <br>
       <span>Usuario: An&oacutenimo</span>
         {% else %}
-        <a href="{{ url_for('logout') }}">Log out</a></div>
         <a href="{{ url_for('history') }}">History of Purchases</a></div>
+        <br>
+        <a href="{{ url_for('logout') }}">Log out</a></div>
         <br>
         <span>Usuario: {{ session['usuario'] }}</span>
         {% endif%}
@@ -29,16 +31,16 @@
     {% endblock %}
 
     
-</body>
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
   <ul class=flashes>
   {% for message in messages %}
-    <div>{{ message }}</div>
+    {{ message }}
   {% endfor %}
   </ul>
 {% endif %}
 {% endwith %}
-
+</body>
+  
 </html>
