@@ -5,6 +5,7 @@
 {% endblock%}
 
 {% block content %}
+<segment>
 <ul>
     {% for item in movies %}
     {% if item.cantidad is defined %}
@@ -24,6 +25,8 @@
     {% endif %}
 
     {% endfor %}
+</segment>
+
     <br><br>
     <form action="" method="post">
         {% if not session['usuario'] %}
