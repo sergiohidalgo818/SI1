@@ -7,35 +7,38 @@
 {% block content %}
 <br><br>
 
-<t2>
-
-</t2>
-
-
-<ul>
-
-
+<body_menu>
+<ul class="navigation">
     {% for item in compras %}
-    <br><br>
-    <t3><div><label>&nbsp Fecha: &nbsp</label>{{item.0.fecha}} <label>&nbsp Total: &nbsp</label> {{item.0.total}}</div>
-    </t3>    
-    <br>
-    {% for movie in item %}
-    {% if movie.titulo is defined %}
-    <div>
-        <t3>{{ movie.titulo }}</t3>
-    </div>
-    <img src="{{url_for('static', filename= movie.poster )}}" width="400" height="500" />
-    <div>
-        <t3><label>&nbsp Precio: &nbsp</label>{{movie.precio}} <label>&nbsp Cantidad: &nbsp</label> {{movie.cantidad}}
-        </t3>
-        <br><br>
-    </div>
-    {%else%}
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
-</ul>
+    
+        <li><a href="#">{{item.0.fecha}} <br><label>Total: &nbsp</label> {{item.0.total}}</a>
+            <ul>
+        {% for movie in item %}
+        {% if movie.titulo is defined %}
+        <form action="" method="post"> 
+        <li><a href=""><button name="details_film" value="{{ movie.id }}">{{ movie.titulo }} x {{ movie.cantidad }}</button></a></li>
+        </form>
+        {%else%}
+        {% endif %}
+        
+        {% endfor %}
+            </ul>
+        
+        <div class="clear"></div></li>
+</li>
+{% endfor %}
+</body_menu>
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    
+    $('.navigation li').hover(function () {
+        $('ul', this).fadeIn();
+    },function () {
+        $('ul', this).fadeOut();
+    });
+    });
+    </script>
 
 {% endblock %}

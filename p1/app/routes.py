@@ -268,7 +268,7 @@ def cart():
                 aux_dict = dict()
 
                 aux_dict['total'] = total
-                aux_dict['fecha'] = date.today().strftime("%m/%d/%Y, %H:%M:%S")
+                aux_dict['fecha'] = date.today().strftime("%m/%d/%Y")
                 
                 aux_list.append(aux_dict)
             
@@ -392,8 +392,27 @@ def register():
         
 @app.route('/history', methods=['GET', 'POST'])
 def history():
+
+    if 'details_film' in request.form:
+
+        detail =list()
+
+        catalogue_data = open(os.path.join(app.root_path,'catalogue/inventario.json'), encoding="utf-8").read()
+        catalogue = json.loads(catalogue_data)
+
+        for i in catalogue['peliculas']:
+            if i['id'] == int(request.form['details_film']):
+                detail.append(i)
+
+        
+
+        return render_template('details.html', title = "Details", movies=detail)
+
+
     if session.get('usuario'):
         compras = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
         compras_info = json.loads(compras)
 
         return render_template('history.html', title = "History", compras = compras_info['compras'])
+    
+    
