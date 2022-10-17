@@ -56,3 +56,6 @@ body_menu{font-family: Arial, Helvetica,sans-serif; font-size:15px;}
         }
         
 .navigation ul a:hover {color:#F2861D;}
+
+barrita{float:left;
+        width: 15%}
