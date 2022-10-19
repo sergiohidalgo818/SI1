@@ -8,8 +8,8 @@
             "precio": 18.99,
             "categoria": "Aventura",
             "a\u00f1o": 1999,
-            "valoraciones": 3,
-            "puntuacion": 4.333333333333333,
+            "valoraciones": 8,
+            "puntuacion": 2.75,
             "actores": [
                 {
                     "nombre": "Jake Lloyd",
@@ -26,8 +26,8 @@
             "precio": 18.99,
             "categoria": "Fantasia",
             "a\u00f1o": 2009,
-            "valoraciones": 1,
-            "puntuacion": 5.0,
+            "valoraciones": 0,
+            "puntuacion": 0,
             "actores": [
                 {
                     "nombre": "Jake Lloyd",
@@ -44,8 +44,8 @@
             "precio": 18.99,
             "categoria": "Accion",
             "a\u00f1o": 2003,
-            "valoraciones": 1,
-            "puntuacion": 5.0,
+            "valoraciones": 0,
+            "puntuacion": 0,
             "actores": [
                 {
                     "nombre": "Jake Lloyd",

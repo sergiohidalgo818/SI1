@@ -108,10 +108,10 @@ def index():
 
             for i in catalogue['peliculas']:
                 if i['id'] == int(request.form['submit']):
-                    puntuacion_aux = i['puntuacion'] * i['valoraciones']
+                    puntuacion_aux = int ( i['puntuacion'] * i['valoraciones'])
                     puntuacion_aux += int(request.form['estrellas'])
                     i['valoraciones']+=1
-                    i['puntuacion'] = puntuacion_aux/i['valoraciones']
+                    i['puntuacion'] = float("{:.2f}".format(puntuacion_aux/i['valoraciones']))
                     detail.append(i)
 
         
