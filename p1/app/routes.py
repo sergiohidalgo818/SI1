@@ -130,8 +130,13 @@ def index():
 def login():
     # doc sobre request object en http://flask.pocoo.org/docs/1.0/api/#incoming-request-data
     if 'username' in request.form:
+
         # aqui se deberia validar con fichero .dat del usuario
-        if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == True:
+        if request.form['username'] != '': 
+            
+            if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == False:
+                flash('Wrong username')
+
             
             if 'password' in request.form:
                 
@@ -152,7 +157,7 @@ def login():
                 else:
                     flash('Wrong password')
         else:
-                flash('Wrong username')
+                flash('Invalid username')
             # aqui se le puede pasar como argumento un mensaje de login invalido
         return render_template('login.html', title = "Sign In")
     else:
@@ -305,7 +310,6 @@ def details():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 
-    oldmask = os.umask (0o777)
 
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
@@ -362,6 +366,9 @@ def register():
                                                     
                                                     dict_user['saldo'] = random.randint(0, 50)
                                                     
+                                                    os.mkdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username']), mode=0o777)
+                                                    
+                                                    open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), "x", encoding="utf-8")
 
                                                     user_f = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), "w", encoding="utf-8")
                                                     user_f.write(json.dumps(dict_user, indent=4))
@@ -374,7 +381,6 @@ def register():
                                                     
                                                     user_f.write(json.dumps(dict_compras, indent=4))
                                                     user_f.close()
-                                                    os.umask (oldmask)
                                                     return redirect(url_for('login'))
                                                 
                                                 else:
@@ -392,7 +398,6 @@ def register():
         else:            
             flash('Short username')
 
-    os.umask (oldmask)
 
     return render_template('register.html', title = "Register")
         

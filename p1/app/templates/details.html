@@ -6,7 +6,9 @@
 
 {% block content %}
 
+
 <ul>
+    <t5>
     {% for item in movies %}
     <div><t3>{{ item.titulo }}</t3></div>
     <a name="imgen" > <img src="{{url_for('static', filename= item.poster )}}" width="400" height="500"/></a>
@@ -15,25 +17,6 @@
     <div>Categoría: <t3>{{ item.categoria }}</t3></div>
     <div>Director: <t3>{{ item.director }}</t3></div>
     <div>Precio: <t3>{{ item.precio }}</t3></div>
-    
-
-    
-    <aside>
-        <t4>
-            <div>Actores: </div>
-            {% for actor in item.actores %}
-            <div><t3>{{ actor.nombre }} : {{ actor.personaje }} 
-                <div>
-                <img src="{{url_for('static', filename= actor.foto )}}" width="300" height="200"/>
-                </div>
-            </t3></div>
-            
-            {% endfor %}
-        </t4>
- 
-    </aside>
-
-    <br>
 
     <label>Valoraciones: {{ item.valoraciones }}</label>
     <label>   Puntuacion: {{ item.puntuacion }}</label>
@@ -58,6 +41,26 @@
     <form action="" method="post">
         <button name="add_to_cart" value="{{ item.id }}">Add to cart</button>
     </form>
+</t5>
+
+    
+    <aside>
+        <t4>
+            <div>Actores: </div>
+            {% for actor in item.actores %}
+            <div><t3>{{ actor.nombre }} : {{ actor.personaje }} 
+                <div>
+                <img src="{{url_for('static', filename= actor.foto )}}" width="300" height="200"/>
+                </div>
+            </t3></div>
+            
+            {% endfor %}
+        </t4>
+ 
+    </aside>
+
+    <br>
+
 
     {% endfor %}
 </ul>
