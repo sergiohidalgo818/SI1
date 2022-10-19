@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock%}
+
+{% block content %}
+<segmenth>
+<br><br>
+<body_menu>
+<ul class="navigation">
+    {% for item in compras %}
+     
+    
+        <li><a href="#">{{item.0.fecha}} <br><label>Total: {{item.0.total}} &nbsp</label> </a>
+            <ul>
+        {% for movie in item %}
+        {% if movie.titulo is defined %}
+        <form action="" method="post"> 
+        <li><a href=""><button name="details_film" value="{{ movie.id }}">{{ movie.titulo }} x {{ movie.cantidad }}</button></a></li>
+        </form>
+        {%else%}
+        {% endif %}
+        
+        {% endfor %}
+            </ul>
+        
+        <div class="clear"></div></li>
+</li>
+{% endfor %}
+</body_menu>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    
+    $('.navigation li').hover(function () {
+        $('ul', this).fadeIn();
+    },function () {
+        $('ul', this).fadeOut();
+    });
+    });
+    </script>
+
+</segmenth>
+{% endblock %}
