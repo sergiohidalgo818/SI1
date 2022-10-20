@@ -136,6 +136,7 @@ def login():
             
             if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == False:
                 flash('Wrong username')
+                return render_template('login.html', title = "Sign In")
 
             
             if 'password' in request.form:
