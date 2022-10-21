@@ -134,14 +134,13 @@ def login():
         # aqui se deberia validar con fichero .dat del usuario
         if request.form['username'] != '': 
             
-            if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == False:
+            if os.path.isdir(os.path.join(app.root_path,'../../si1users/' + request.form['username'])) == False:
                 flash('Wrong username')
-                return render_template('login.html', title = "Sign In")
 
             
             if 'password' in request.form:
                 
-                user = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), encoding="utf-8").read()
+                user = open(os.path.join(app.root_path,'../../si1users/' + request.form['username'] + '/userdata'), encoding="utf-8").read()
                 user_info = json.loads(user)
                
 
@@ -253,7 +252,7 @@ def cart():
             total+=i['precio']*i['cantidad']
 
 
-        user = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/userdata'), encoding="utf-8").read()
+        user = open(os.path.join(app.root_path,'../../si1users/' + session['usuario'] + '/userdata'), encoding="utf-8").read()
         user_info = json.loads(user)
                
         if user_info['saldo'] < total:
@@ -264,11 +263,11 @@ def cart():
             else:
                 user_info['saldo'] -= total        
 
-                user_f = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/userdata'), "w", encoding="utf-8")
+                user_f = open(os.path.join(app.root_path,'../../si1users/' + session['usuario'] + '/userdata'), "w", encoding="utf-8")
                 user_f.write(json.dumps(user_info, indent=4))
                 user_f.close()
            
-                compras = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
+                compras = open(os.path.join(app.root_path,'../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
                 compras_info = json.loads(compras)
 
 
@@ -287,7 +286,7 @@ def cart():
 
                 compras_info['compras'] += [aux_list]
 
-                compras_f = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), "w", encoding="utf-8")
+                compras_f = open(os.path.join(app.root_path,'../../si1users/' + session['usuario'] + '/compras.json'), "w", encoding="utf-8")
                 compras_f.write(json.dumps(compras_info, indent=4))
                 compras_f.close()
 
@@ -316,8 +315,8 @@ def register():
 
     dict_user = dict()
 
-    if os.path.isdir(os.path.join(app.root_path,'../../../si1users')) == False:
-        os.mkdir(os.path.join(app.root_path,'../../../si1users'), mode=0o777)
+    if os.path.isdir(os.path.join(app.root_path,'../../si1users')) == False:
+        os.mkdir(os.path.join(app.root_path,'../../si1users'), mode=0o777)
 
     if 'username' in request.form:
         if len(request.form['username']) >= 5:
@@ -329,7 +328,7 @@ def register():
                     flash('Wrong username')
                     return render_template('register.html', title = "Register")
 
-            if os.path.isdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username'])) == True:
+            if os.path.isdir(os.path.join(app.root_path,'../../si1users/' + request.form['username'])) == True:
                 flash('Username already exists')
                 return render_template('register.html', title = "Register")
 
@@ -367,15 +366,15 @@ def register():
                                                     
                                                     dict_user['saldo'] = random.randint(0, 50)
                                                     
-                                                    os.mkdir(os.path.join(app.root_path,'../../../si1users/' + request.form['username']), mode=0o777)
+                                                    os.mkdir(os.path.join(app.root_path,'../../si1users/' + request.form['username']), mode=0o777)
                                                     
-                                                    open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), "x", encoding="utf-8")
+                                                    open(os.path.join(app.root_path,'../../si1users/' + request.form['username'] + '/userdata'), "x", encoding="utf-8")
 
-                                                    user_f = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/userdata'), "w", encoding="utf-8")
+                                                    user_f = open(os.path.join(app.root_path,'../../si1users/' + request.form['username'] + '/userdata'), "w", encoding="utf-8")
                                                     user_f.write(json.dumps(dict_user, indent=4))
                                                     user_f.close()
 
-                                                    user_f = open(os.path.join(app.root_path,'../../../si1users/' + request.form['username'] + '/compras.json'), "w", encoding="utf-8")
+                                                    user_f = open(os.path.join(app.root_path,'../../si1users/' + request.form['username'] + '/compras.json'), "w", encoding="utf-8")
                                                     
                                                     dict_compras= dict()
                                                     dict_compras['compras'] = []
@@ -422,7 +421,7 @@ def history():
 
 
     if session.get('usuario'):
-        compras = open(os.path.join(app.root_path,'../../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
+        compras = open(os.path.join(app.root_path,'../../si1users/' + session['usuario'] + '/compras.json'), encoding="utf-8").read()
         compras_info = json.loads(compras)
 
         return render_template('history.html', title = "History", compras = compras_info['compras'])

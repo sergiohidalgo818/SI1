@@ -2,18 +2,18 @@ body {
     background-color: rgb(231, 1, 127)
 }
 t1{ font-size: 50pt;}
-t2{position: relative; left: 240px; top: -100px}
+t2{position: absolute; right: 1270px; top: 100px}
 t3{ font-size: 20pt;}
-t4{ position: relative; left: 1000px; top: -800px; width: 1900px; height: 100px; }
-t5{ position: relative;  left: 200px; top: -100px}
+t4{ position: absolute; top: 145px; right: -1000px; width: 1900px; height: 100px; }
+t5{ position: absolute; right: 1050px; top: 160px }
 stars{ color:rgb(243, 251, 1);}
 
 contra{float: left;}
 
-segment{position: relative; left: 200px; top: -100px}
-segmenth{position: relative; left: 200px; top: -100px}
-segmentin{position: relative; left: 200px; top: -100px}
-segmentr{position: relative; left: 200px; top: -100px}
+segment{position: absolute; right: 1050px; top: 160px}
+segmenth{position: absolute; left: 230px; top: 70px}
+segmentin{position: absolute; right: 1200px; top: 90px}
+segmentr{position: absolute; right: 890px; top: 90px}
 
  
 body_menu{font-family: Arial, Helvetica,sans-serif; font-size:15px;}
@@ -21,16 +21,16 @@ body_menu{font-family: Arial, Helvetica,sans-serif; font-size:15px;}
 
 .navigation li {float:none;width:150px;position:relative;}
 .navigation li a {
-    background: #f21de4;
+    background: #f23d1d;
     color:#fff;
     display:block;
     padding:8px 7px 8px 7px;
     text-decoration:none;
-    border-top:1px solid #f21de4;
+    border-top:1px solid #F2861D;
     text-align:center;
     text-transform:uppercase;
     } 
-.navigation li a:hover {color:#f21de4; }
+.navigation li a:hover {color:#F2861D; }
 .navigation ul {
     
         position:absolute;
@@ -40,7 +40,7 @@ body_menu{font-family: Arial, Helvetica,sans-serif; font-size:15px;}
         margin:0 0 0 -1px;
         padding:0;
         list-style:none;
-        border-bottom:3px solid #f21de4;
+        border-bottom:3px solid #F2861D;
         }
         
 .navigation ul li {
@@ -61,7 +61,7 @@ body_menu{font-family: Arial, Helvetica,sans-serif; font-size:15px;}
         border-bottom:1px dashed #6B6B6B;
         }
         
-.navigation ul a:hover {color:#f21de4;}
+.navigation ul a:hover {color:#F2861D;}
 
 barrita{float:left;
         width: 12%}

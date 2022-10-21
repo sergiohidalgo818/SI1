@@ -24,8 +24,9 @@
     {% endif %}
 
     {% endfor %}
-    
-    <ul>
+</segment>
+
+<ul>
     <br><br>
     <form action="" method="post">
         {% if not session['usuario'] %}
@@ -33,17 +34,16 @@
         {% else %}
         <button name="purchase" value="purchase">Purchase</button>
         {% endif%}
-        
+
     </form>
 </ul>
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul class=flashes>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
         {% for message in messages %}
         {{ message }}
         {% endfor %}
         {% endif %}
         {% endwith %}
-        {% endblock %}
-    </segment>
+{% endblock %}
