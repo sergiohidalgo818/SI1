@@ -11,6 +11,8 @@
     <t5>
     {% for item in movies %}
     <div><t3>{{ item.titulo }}</t3></div>
+    <br>
+
     <a name="imgen" > <img src="{{url_for('static', filename= item.poster )}}" width="400" height="500"/></a>
     
     <div>Fecha: <t3>{{ item.año }}</t3></div>
@@ -50,7 +52,7 @@
             {% for actor in item.actores %}
             <div><t3>{{ actor.nombre }} : {{ actor.personaje }} 
                 <div>
-                <img src="{{url_for('static', filename= actor.foto )}}" width="300" height="200"/>
+                <img src="{{url_for('static', filename= actor.foto )}}" width="300" height="400"/>
                 </div>
             </t3></div>
             

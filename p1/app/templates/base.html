@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %}- VideoClub</title>
-    <!-- Uso de url_for para obtener la ruta de elementos de la página -->
-    <link rel="stylesheet" type="text/css" href= {{ url_for('static', filename='css/si1.css' ) }}/>
-</head>
-
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} {% endblock %}- VideoClub</title>
+        <!-- Uso de url_for para obtener la ruta de elementos de la página -->
+        <link rel="stylesheet" type="text/css" href= {{ url_for('static', filename='css/si1.css' ) }}/>
+    </head>
+    
+    <div class="cabecera"><t1><br>&nbsp VideoClub:</t1><br>
+    </div>
 <body>
-    <t1>VideoClub:</t1><br><br>
+    
+      <a href="{{url_for('list_movies')}}">List of movies</a>
+      <br>
       <a href="{{url_for('index')}}">Home</a>
       <br>
       <a href="{{ url_for('cart') }}">Cart</a>
@@ -26,7 +30,6 @@
         <br>
         <span>Usuario: {{ session['usuario'] }}</span>
         {% endif%}
-        
     {% block content%}
     {% endblock %}
 

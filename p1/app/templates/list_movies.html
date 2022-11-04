@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock%}
+
+{% block content %}
+    {% if not movies is string %}
+      <ul>
+      {% for item in movies %}
+      <li>{{ item.movietitle }}</li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <h1>{{ movies }}</h1>
+    {% endif %}
+{% endblock %}

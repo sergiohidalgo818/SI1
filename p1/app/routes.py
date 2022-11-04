@@ -11,6 +11,7 @@ import re
 from datetime import datetime
 from sqlalchemy import null
 from app import app
+from app import database
 from flask import render_template, request, url_for, redirect, session, flash
 import json
 import os
@@ -38,16 +39,14 @@ def index():
                 if request.form['search'] != '':
 
                     for i in catalogue['peliculas']:
-                        if (request.form['search'].casefold() in str(i['titulo']).casefold() or 
-                        request.form['search'].casefold() in str(i['director']).casefold()):
+                        if request.form['search'].casefold() in str(i['titulo']).casefold():
                             list_search.append(i)
                 else:
                     return render_template('index.html', title = "Film Search", movies=catalogue['peliculas'])
             else:
                     if request.form['search'] != '':
                         for i in catalogue['peliculas']:
-                            if ((request.form['search'].casefold() in str(i['titulo']).casefold() or 
-                                request.form['search'].casefold() in str(i['director']).casefold()) and
+                            if ((request.form['search'].casefold() in str(i['titulo']).casefold()) and
                                 request.form['genre'].casefold() == str(i['categoria']).casefold()):
                                 list_search.append(i)
                     else:
@@ -136,6 +135,7 @@ def login():
             
             if os.path.isdir(os.path.join(app.root_path,'../../si1users/' + request.form['username'])) == False:
                 flash('Wrong username')
+                return render_template('login.html', title = "Sign In")
 
             
             if 'password' in request.form:
@@ -292,20 +292,9 @@ def cart():
 
                 session['carrito'] = {"peliculas": []}
                 return render_template('cart.html', title = "Cart",movies= session['carrito'])
-
-
-    
-
-            
-        
-    
+   
     return render_template('cart.html', title = "Cart", movies=list_catalogue)
 
-
-@app.route('/details', methods=['GET', 'POST'])
-def details():
-
-    return render_template('details.html', title = "Details")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -404,6 +393,11 @@ def register():
 @app.route('/history', methods=['GET', 'POST'])
 def history():
 
+    if not session.get('usuario'):
+        return render_template('history.html', title = "History")
+
+
+
     if 'details_film' in request.form:
 
         detail =list()
@@ -414,9 +408,7 @@ def history():
         for i in catalogue['peliculas']:
             if i['id'] == int(request.form['details_film']):
                 detail.append(i)
-
         
-
         return render_template('details.html', title = "Details", movies=detail)
 
 
@@ -425,3 +417,9 @@ def history():
         compras_info = json.loads(compras)
 
         return render_template('history.html', title = "History", compras = compras_info['compras'])
+
+#EJEMPLO DATABASE MOODLE
+@app.route('/list_movies')
+def list_movies():
+    movies = database.db_listOfMovies()
+    return render_template('list_movies.html', title = "Movies from Postgres Database", movies = movies)

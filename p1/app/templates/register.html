@@ -23,6 +23,15 @@
             <label><b>Password</b></label>
             <input placeholder="Enter password" id="password" name="password" type="password"
                 oninput="passwordStrenght()" />
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
             <p id="strength"></p>
             <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
             <link rel="stylesheet" href="/resources/demos/style.css">
@@ -85,15 +94,7 @@
 
     </form>
     <br>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+
 </segmentr>
 
 {% endblock %}

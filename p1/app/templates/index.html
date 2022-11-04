@@ -25,21 +25,24 @@
 
 <segment>
 
-<ul>
+    <ul>
 
 
-    {% for item in movies %}
-    <div>
-        <t3>{{ item.titulo }}</t3>
-    </div>
-    
+        {% for item in movies %}
+        <div>
+            <t3>{{ item.titulo }}</t3>
+        </div>
 
-    <form action="" method="post">
-        <button name="details_film" value="{{ item.id }}"> <img src="{{url_for('static', filename= item.poster )}}"
-            width="400" height="500" /></button>
-        </form>
+
+        <form action="" method="post">
+            <button name="details_film" value="{{ item.id }}"> 
+                <img src="{{url_for('static', filename= item.poster )}}"
+                    width="400" height="500" />
+                </button>
+
+                </form>
         <br><br />
-    {% endfor %}
+        {% endfor %}
 </segment>
 
 {% endblock %}
