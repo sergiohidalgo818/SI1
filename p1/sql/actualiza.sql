@@ -47,10 +47,10 @@ select setval('orders_sequence', (SELECT MAX(orderid) FROM orders));
 ALTER TABLE customers ADD COLUMN balance money default 0;
 
 -- PROCEDIMIENTO PARA CREAR UN NUMERO ALEATORIO ENTRE 0 Y N:
-CREATE OR REPLACE FUNCTION setCustomersBalance(IN N bigint) returns void as $$ 
+CREATE OR REPLACE FUNCTION setCustomersBalance(IN initialBalance bigint) returns void as $$ 
 BEGIN
 UPDATE customers
-  SET balance =(random() * N) :: NUMERIC :: MONEY;
+  SET balance =(random() * initialBalance) :: NUMERIC :: MONEY;
 END;
 $$ LANGUAGE 'plpgsql';
 -- LLAMADA AL PROCEDIMIENTO CON N = 100
