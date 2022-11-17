@@ -27,10 +27,5 @@ $$
     end
 $$ LANGUAGE 'plpgsql';
 
-create trigger updRatings before insert or update or delete on ratings
-  for each row execute procedure updRatings();
-
-
---insert into ratings values('31', '103','4')
---delete from ratings where customerid='31' and movieid='103'
---update ratings set rating='3' where customerid='31' and movieid='103'
+CREATE TRIGGER updRatings
+AFTER UPDATE OR INSERT OR DELETE on ratings FOR EACH ROW EXECUTE PROCEDURE updRatingsFun();
