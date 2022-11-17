@@ -4,11 +4,8 @@ ALTER TABLE imdb_directormovies ADD CONSTRAINT imdb_directormovies_pkey PRIMARY 
 ALTER TABLE imdb_directormovies DROP COLUMN numpartitipation;
 
 -- ARREGLO INVENTORY
-ALTER TABLE inventory DROP CONSTRAINT inventory_pkey;
 ALTER TABLE inventory ADD CONSTRAINT inventory_fkey FOREIGN KEY (prod_id) REFERENCES products(prod_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;
 
---ARREGLO PRODUCTS
-ALTER TABLE products ADD CONSTRAINT products_fkey FOREIGN KEY (movieid) REFERENCES imdb_movies(movieid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;
 
 -- ARREGLO ACTORMOVIES
 ALTER TABLE imdb_actormovies ADD CONSTRAINT imdb_actormovies_pkey FOREIGN KEY (movieid) REFERENCES imdb_movies(movieid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;
@@ -16,16 +13,22 @@ ALTER TABLE imdb_actormovies ADD CONSTRAINT imdb_actormovies_fkey FOREIGN KEY (a
 
 
 -- ARREGLO ORDERDETAIL
-ALTER TABLE orderdetail ADD CONSTRAINT orderdetail_fkey FOREIGN KEY (orderid) REFERENCES orders(orderid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;
+-- SE CREA OTRA TABLA PARA PODER TENER LA SUMA DE LA CANTIDAD DE TODAS LAS CANTIDADES
+-- IGUALES EN ORDERDETAIL
+CREATE TABLE orderdetailsum AS
+SELECT orderid, orderdetail.prod_id, sum(quantity) AS quantity
+FROM orderdetail 
+INNER JOIN products ON orderdetail.prod_id = products.prod_id
+group by orderid, orderdetail.prod_id;
 
+ALTER TABLE orderdetailsum ADD CONSTRAINT orderdetail_pkey PRIMARY KEY (orderid, prod_id);
+ALTER TABLE orderdetailsum ADD FOREIGN KEY (orderid) REFERENCES orders(orderid) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE orderdetailsum ADD CONSTRAINT orderdetail_fkey FOREIGN KEY (prod_id) REFERENCES products(prod_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- ARREGLO ORDERS
-DELETE FROM orders WHERE orderid IN (
-	SELECT orders.orderid FROM orderdetail RIGHT JOIN orders on orderdetail.orderid = orders.orderid WHERE orderdetail.prod_id IS NULL);
+DROP TABLE orderdetail;
 
--- ARREGLO PRODUCTS
-ALTER TABLE products DROP CONSTRAINT products_fkey;
-ALTER TABLE products ADD CONSTRAINT products_fkey FOREIGN KEY (movieid) REFERENCES imdb_movies(movieid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;
+ALTER TABLE orderdetailsum RENAME TO orderdetail;
+
 
 --SECUENCIAS DE CUSTOMERS Y ORDERS
 CREATE SEQUENCE customers_sequence;
