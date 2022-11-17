@@ -72,6 +72,9 @@ def index():
         
     #añadir al carrito
     if 'add_to_cart' in request.form:
+
+        
+
         
         if not session.get('carrito'):
             dict_aux = dict()
@@ -85,6 +88,12 @@ def index():
         aux_id['id'] = int(request.form['add_to_cart'])
         aux_id['cantidad'] = 1
 
+        detail =list()
+
+        for i in catalogue['peliculas']:
+            if i['id'] == int(request.form['add_to_cart']):
+                detail.append(i)
+
         for i in cart['peliculas']:
             if i['id'] == aux_id['id']:
                 aux_id['cantidad'] = 0
@@ -92,6 +101,23 @@ def index():
 
         if aux_id['cantidad'] == 1:
             cart['peliculas'] += [aux_id]
+
+
+        for i in catalogue['peliculas']:
+            if i['id'] == aux_id['id']:
+                if i['stock'] == 0:
+                    flash("No hay suficientes productos en stock")
+                    return render_template('details.html', title = "Details", movies=detail)
+
+                else:
+                    i['stock']-=1
+
+        
+
+
+        compras_f = open(os.path.join(app.root_path,'catalogue/inventario.json'), "w", encoding="utf-8")
+        compras_f.write(json.dumps(catalogue, indent=4))
+        compras_f.close() 
             
 
         session['carrito'] = cart
@@ -217,8 +243,15 @@ def cart():
                 else:
                     j['cantidad'] -= 1
 
+        for i in catalogue['peliculas']:
+            if i['id'] == int(request.form['delete']):
+                    i['stock']+=1
 
+        compras_f = open(os.path.join(app.root_path,'catalogue/inventario.json'), "w", encoding="utf-8")
+        compras_f.write(json.dumps(catalogue, indent=4))
+        compras_f.close()
         dict_cart = dict()
+        
         dict_cart['peliculas'] = list_cart
 
         session['carrito'] = dict_cart
@@ -227,10 +260,22 @@ def cart():
 
     
     if 'add' in request.form:
+
+            
        
         aux_id = dict()
 
         aux_id['id'] = int(request.form['add'])
+
+
+        for i in catalogue['peliculas']:
+            if i['id'] == aux_id['id']:
+                if i['stock'] == 0:
+                    flash("No hay suficientes productos en stock")
+                    return render_template('cart.html', title = "Cart", movies=list_catalogue)
+                else:
+                    i['stock']-=1
+            
 
         for i in cart['peliculas']:
             if i['id'] == aux_id['id']:
@@ -240,6 +285,11 @@ def cart():
         for i in list_catalogue:
             if i['id'] == int(request.form['add']):
                 i['cantidad'] += 1
+
+
+        compras_f = open(os.path.join(app.root_path,'catalogue/inventario.json'), "w", encoding="utf-8")
+        compras_f.write(json.dumps(catalogue, indent=4))
+        compras_f.close()
 
         session['carrito'] = cart
 

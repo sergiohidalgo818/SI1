@@ -1,30 +1,26 @@
-create or replace function updRatings()
-returns trigger as 
-$$
+CREATE OR REPLACE FUNCTION updRatingsFun() RETURNS trigger AS $$ BEGIN
+    IF (TG_OP = 'DELETE') THEN 
+        UPDATE imdb_movies SET ratingmean = ((ratingmean * ratingcount) - OLD.rating) / (ratingcount - 1) WHERE ratingcount >'1' AND movieid = OLD.movieid;
+        UPDATE imdb_movies SET ratingmean = '0' WHERE  ratingcount >'1' AND movieid = OLD.movieid;        
+        UPDATE imdb_movies SET ratingcount = ratingcount - 1 WHERE movieid = OLD.movieid;
+        RETURN OLD;
+    END IF;
 
-    begin
-        if (TG_OP = 'DELETE') then 
-            update imdb_movies set ratingmean = ((ratingmean * ratingcount) - old.rating) / (ratingcount - 1) where movieid = old.movieid and ratingcount >'1';
-            update imdb_movies set ratingmean = '0' where movieid = old.movieid and ratingcount ='1';        
-            update imdb_movies set ratingcount = ratingcount - 1 where movieid = old.movieid;
-            return old;
+        IF (TG_OP = 'INSERT') THEN
+            UPDATE imdb_movies SET ratingmean = ((ratingmean * ratingcount) + NEW.rating) / (ratingcount + 1) WHERE movieid = NEW.movieid;
+            UPDATE imdb_movies SET ratingcount =  ratingcount + 1 WHERE movieid = NEW.movieid;
+            RETURN NEW;
+        END IF;
+        
+        IF (TG_OP = 'UPDATE') THEN
+            UPDATE imdb_movies SET ratingmean = ((ratingmean * ratingcount) - OLD.rating) / (ratingcount - 1) WHERE ratingcount >'1' AND movieid = NEW.movieid;
+            UPDATE imdb_movies SET ratingmean = NEW.rating WHERE ratingcount >'1' AND movieid = NEW.movieid;
+            UPDATE imdb_movies SET ratingmean = ((ratingmean * ratingcount) + NEW.rating) / (ratingcount + 1) WHERE movieid = NEW.movieid;
+            RETURN NEW;
         END IF;
 
-        if (TG_OP = 'INSERT') then
-            update imdb_movies set ratingmean = ((ratingmean * ratingcount) + new.rating) / (ratingcount + 1) where movieid = new.movieid;
-            update imdb_movies set ratingcount =  ratingcount + 1 where movieid = new.movieid;
-            return new;
-        END IF;
-
-        if (TG_OP = 'UPDATE') then
-            update imdb_movies set ratingmean = ((ratingmean * ratingcount) - old.rating) / (ratingcount - 1) where movieid = new.movieid and ratingcount >'1';
-            update imdb_movies set ratingmean = new.rating where movieid = new.movieid and ratingcount ='1';
-            update imdb_movies set ratingmean = ((ratingmean * ratingcount) + new.rating) / (ratingcount + 1) where movieid = new.movieid;
-            return new;
-        END IF;
-
-        return NULL;
-    end
+        RETURN NULL;
+    END
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER updRatings

@@ -8,15 +8,27 @@
             "precio": 18.99,
             "categoria": "Aventura",
             "a\u00f1o": 1999,
-            "valoraciones": 9,
-            "puntuacion": 3.0,
+            "valoraciones": 35,
+            "puntuacion": 3.94,
+            "stock": 21,
             "actores": [
                 {
                     "nombre": "Jake Lloyd",
                     "personaje": "Anakin Skywalker",
                     "foto": "img/anakin.jpg"
+                },
+                {
+                    "nombre": "Ewan McGregor",
+                    "personaje": "Obi-Wan Kenobi",
+                    "foto": "img/Ewan_McGregor_Cannes_2012.jpg"
+                },
+                {
+                    "nombre": "Liam neeson",
+                    "personaje": "Qui-Gon Jinn",
+                    "foto": "img/Liam_Neeson_Deauville_2012_2.jpg"
                 }
-            ]
+            ],
+            "cantidad": 1
         },
         {
             "id": 2,
@@ -26,15 +38,27 @@
             "precio": 18.99,
             "categoria": "Fantasia",
             "a\u00f1o": 2009,
-            "valoraciones": 0,
-            "puntuacion": 0,
+            "valoraciones": 2,
+            "puntuacion": 5.0,
+            "stock": 0,
             "actores": [
                 {
-                    "nombre": "Jake Lloyd",
-                    "personaje": "Anakin Skywalker",
-                    "foto": "img/anakin.jpg"
+                    "nombre": "Alina Freund ",
+                    "personaje": "Lilly",
+                    "foto": "img/Lilly.jpg"
+                },
+                {
+                    "nombre": "Sami Herzog",
+                    "personaje": "Leon",
+                    "foto": "img/Leon.jpg"
+                },
+                {
+                    "nombre": "Pilar bardem",
+                    "personaje": "Surulunda",
+                    "foto": "img/bardem.jpg"
                 }
-            ]
+            ],
+            "cantidad": 20
         },
         {
             "id": 3,
@@ -44,15 +68,27 @@
             "precio": 18.99,
             "categoria": "Accion",
             "a\u00f1o": 2003,
-            "valoraciones": 0,
-            "puntuacion": 0,
+            "valoraciones": 5,
+            "puntuacion": 3.4,
+            "stock": 20,
             "actores": [
                 {
-                    "nombre": "Jake Lloyd",
-                    "personaje": "Anakin Skywalker",
-                    "foto": "img/anakin.jpg"
+                    "nombre": "Uma Thurman",
+                    "personaje": "La novia",
+                    "foto": "img/uma.jpg"
+                },
+                {
+                    "nombre": "Lucy Liu",
+                    "personaje": "O-Ren Ishii",
+                    "foto": "img/Lucy_Liu_Cannes_2008.jpg"
+                },
+                {
+                    "nombre": "John Arthur Carradine ",
+                    "personaje": "Bill",
+                    "foto": "img/john.jpg"
                 }
-            ]
+            ],
+            "cantidad": 1
         },
         {
             "id": 4,
@@ -64,11 +100,22 @@
             "a\u00f1o": 2004,
             "valoraciones": 0,
             "puntuacion": 0,
+            "stock": 20,
             "actores": [
                 {
-                    "nombre": "Jake Lloyd",
-                    "personaje": "Anakin Skywalker",
-                    "foto": "img/anakin.jpg"
+                    "nombre": "Uma Thurman",
+                    "personaje": "La novia",
+                    "foto": "img/uma.jpg"
+                },
+                {
+                    "nombre": "Lucy Liu",
+                    "personaje": "O-Ren Ishii",
+                    "foto": "img/Lucy_Liu_Cannes_2008.jpg"
+                },
+                {
+                    "nombre": "John Arthur Carradine ",
+                    "personaje": "Bill",
+                    "foto": "img/john.jpg"
                 }
             ]
         },
@@ -80,13 +127,24 @@
             "precio": 18.99,
             "categoria": "Terror",
             "a\u00f1o": 2009,
-            "valoraciones": 0,
-            "puntuacion": 0,
+            "valoraciones": 1,
+            "puntuacion": 4.0,
+            "stock": 20,
             "actores": [
                 {
-                    "nombre": "Jake Lloyd",
-                    "personaje": "Anakin Skywalker",
-                    "foto": "img/anakin.jpg"
+                    "nombre": "Hannah Dakota Fanning",
+                    "personaje": "Caroline",
+                    "foto": "img/Dakota.jpg"
+                },
+                {
+                    "nombre": "Teri Lynn Hatcher ",
+                    "personaje": "Mama",
+                    "foto": "img/Teri.jpg"
+                },
+                {
+                    "nombre": "Jennifer Jane Saunders",
+                    "personaje": "Se\u00f1orita Spreegan",
+                    "foto": "img/Jennifer.jpg"
                 }
             ]
         },
@@ -100,11 +158,22 @@
             "a\u00f1o": 2005,
             "valoraciones": 0,
             "puntuacion": 0,
+            "stock": 20,
             "actores": [
                 {
-                    "nombre": "Jake Lloyd",
-                    "personaje": "Anakin Skywalker",
-                    "foto": "img/anakin.jpg"
+                    "nombre": "Helena Bonham Carter",
+                    "personaje": "Emily",
+                    "foto": "img/Helena.jpg"
+                },
+                {
+                    "nombre": "Johnny Depp",
+                    "personaje": "Victor",
+                    "foto": "img/Johnny_Depp_2020.jpg"
+                },
+                {
+                    "nombre": "Emily Margaret Watson ",
+                    "personaje": "Victoria",
+                    "foto": "img/Emily.jpg"
                 }
             ]
         },
@@ -118,11 +187,22 @@
             "a\u00f1o": 1999,
             "valoraciones": 0,
             "puntuacion": 0,
+            "stock": 20,
             "actores": [
                 {
-                    "nombre": "Jake Lloyd",
-                    "personaje": "Anakin Skywalker",
-                    "foto": "img/anakin.jpg"
+                    "nombre": "Peter Kelamis",
+                    "personaje": "Sentry",
+                    "foto": "img/Peter_Kelamis.jpg"
+                },
+                {
+                    "nombre": "Catherine Anne O'Hara",
+                    "personaje": "Rowena",
+                    "foto": "img/CATHERINE_OHARA.jpg"
+                },
+                {
+                    "nombre": "Nicole Lyn Oliver",
+                    "personaje": "Ashlyn",
+                    "foto": "img/Nicole_Oliver_2013.jpg"
                 }
             ]
         }

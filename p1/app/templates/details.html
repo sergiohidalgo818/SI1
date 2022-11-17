@@ -19,9 +19,12 @@
     <div>Categoría: <t3>{{ item.categoria }}</t3></div>
     <div>Director: <t3>{{ item.director }}</t3></div>
     <div>Precio: <t3>{{ item.precio }}</t3></div>
+    <div>Stock: <t3>{{ item.stock }}</t3></div>
 
     <label>Valoraciones: {{ item.valoraciones }}</label>
     <label>   Puntuacion: {{ item.puntuacion }}</label>
+
+
 
 
     <form action="" method="post">
@@ -43,7 +46,20 @@
     <form action="" method="post">
         <button name="add_to_cart" value="{{ item.id }}">Add to cart</button>
     </form>
+    
+
+    <label>    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <t3> {{ message }} </t3>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}</label>
+
 </t5>
+
+
 
     
     <aside>
@@ -65,6 +81,9 @@
 
 
     {% endfor %}
+    
+  
+            {% endblock %}
 </ul>
 
-{% endblock %}
+
