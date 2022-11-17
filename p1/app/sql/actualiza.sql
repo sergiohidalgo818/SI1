@@ -24,7 +24,8 @@ group by orderid, orderdetail.prod_id;
 ALTER TABLE orderdetailsum ADD CONSTRAINT orderdetail_pkey PRIMARY KEY (orderid, prod_id);
 ALTER TABLE orderdetailsum ADD FOREIGN KEY (orderid) REFERENCES orders(orderid) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE orderdetailsum ADD CONSTRAINT orderdetail_fkey FOREIGN KEY (prod_id) REFERENCES products(prod_id) ON DELETE CASCADE ON UPDATE CASCADE;
-
+ALTER TABLE orderdetailsum ADD COLUMN price MONEY;
+ 
 DROP TABLE orderdetail;
 
 ALTER TABLE orderdetailsum RENAME TO orderdetail;
