@@ -12,6 +12,7 @@ from datetime import datetime
 from sqlalchemy import null
 from app import app
 from app import database
+from app import sql
 from flask import render_template, request, url_for, redirect, session, flash
 import json
 import os
@@ -44,12 +45,16 @@ def index():
             else:
                     if request.form['search'] != '':
                         for i in catalogue:
-                            if ((request.form['search'].casefold() in str(i['movietitle']).casefold()) and
-                                int(request.form['genre']) == database.getGenreFromMovie(i['movieid'])):
-                                list_search.append(i)
+                            if ((request.form['search'].casefold() in str(i['movietitle']).casefold())):
+                                    genres=(database.getGenreFromMovie(i['movieid']))
+                                    for j in genres:
+                                        if(int(request.form['genre']) == j['genre_id']):
+                                            list_search.append(i)
                     else:
                         for i in catalogue:
-                            if (int(request.form['genre']) == database.getGenreFromMovie(i['movieid'])):
+                            genres=(database.getGenreFromMovie(i['movieid']))
+                            for j in genres:
+                                if(int(request.form['genre']) == j['genre_id']):
                                     list_search.append(i)
 
 
@@ -98,15 +103,10 @@ def index():
                 else:
                     i['stock']-=1
 
-        
-
-
-            
 
         session['carrito'] = cart
         
 
-    
     #establecer puntuación
     if 'submit' in request.form:
         if 'estrellas' in request.form:
@@ -137,24 +137,21 @@ def login():
 
         # aqui se deberia validar con fichero .dat del usuario
         if request.form['username'] != '': 
-            
-            if os.path.isdir(os.path.join(app.root_path,'../../si1users/' + request.form['username'])) == False:
+            if(database.checkUsername(request.form['username']) == "noexists"):
                 flash('Wrong username')
                 return render_template('login.html', title = "Sign In")
         
             if 'password' in request.form:
                 
-                contra = hashlib.sha3_384()
-                contra.update(request.form['password'].encode('utf-8'))
 
                 login = database.login(request.form["username"])
-                if login == 'Something is broken' :
-                    return render_template('login.html', title = "Sign In")
-                if login[0][0] == contra.hexdigest():
+            
+                if str(login[0]['password']) == str(request.form['password']):
                     session['usuario'] = request.form["username"]
                     session.modified = True
                     return redirect(url_for('index')) 
                 else:
+                    flash('Wrong password')
                     return render_template('login.html', title = "Sign In")  
         else:
                 flash('Invalid username')
@@ -338,10 +335,7 @@ def register():
                     flash('Wrong username')
                     return render_template('register.html', title = "Register")
 
-                #flash('Username already exists')
-                #return render_template('register.html', title = "Register")
-
-            
+                
             dict_user['username'] = request.form['username']
 
             if 'email' in request.form:
@@ -362,10 +356,9 @@ def register():
                                     if 'confirm_password' in request.form:
                                         if request.form['password'] == request.form['confirm_password']:
                                             
-                                            contra = hashlib.sha3_384()
-                                            contra.update(request.form['password'].encode('utf-8'))
+                                            request.form['password']
                                            
-                                            dict_user['password'] = contra.hexdigest()
+                                            dict_user['password'] = request.form['password']
                                             
 
                                             if 'credit_card' in request.form:
@@ -374,11 +367,14 @@ def register():
                                                     dict_user['credit_card'] = request.form['credit_card']
                                                     
                                                     dict_user['saldo'] = random.randint(0, 50)
-                                                    
 
-                                                    database.db_register(dict_user)
 
                                                     
+                                                    if(database.checkUsername(dict_user['username']) == "exists"):
+                                                        flash('Username already exists')
+                                                        return render_template('register.html', title = "Register")
+                                                    
+                                                    database.register(dict_user)
    
                                                     return redirect(url_for('login'))
                                                 
@@ -428,8 +424,3 @@ def history():
 
         return render_template('history.html', title = "History", compras = compras_info['compras'])
 
-#EJEMPLO DATABASE MOODLE
-@app.route('/list_movies')
-def list_movies():
-    movies = database.db_listOfMovies()
-    return render_template('list_movies.html', title = "Movies from Postgres Database", movies = movies)

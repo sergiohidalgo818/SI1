@@ -12,24 +12,6 @@ db_meta = MetaData(bind=db_engine)
 # cargar una tabla
 db_table_movies = Table('imdb_movies', db_meta, autoload=True, autoload_with=db_engine)
 
-def movieHasGenre(idmovie, idgenre): 
-    
-    try:
-        db_conn = None
-        db_conn = db_engine.connect()
-        db_result = db_conn.execute("select * from imdb_movies where movieid in(Select movieid From imdb_moviegenres where "+ str(idgenre) +"= imdb_moviegenres.genre_id and " + str(idmovie) + " = imdb_moviegenres.movieid)")
-
-        return  list(db_result)
-    except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
-
-        return 'Something is broken'
-
 
 def getGenreFromMovie(idmovie): 
     
@@ -38,7 +20,7 @@ def getGenreFromMovie(idmovie):
         db_conn = db_engine.connect()
         db_result = db_conn.execute("Select genre_id from imdb_moviegenres where movieid = " + str(idmovie))
 
-        return db_result.first()
+        return db_result.mappings().all()
     except:
         if db_conn is not None:
             db_conn.close()
@@ -49,23 +31,6 @@ def getGenreFromMovie(idmovie):
 
         return 'Something is broken'
 
-
-def getMovieFromGenre(genre): 
-    
-    try:
-        db_conn = None
-        db_conn = db_engine.connect()
-        db_result = db_conn.execute("Select * from imdb_movies where movieid in (Select movieid From imdb_moviegenres where"+ str(genre) +"= imdb_moviegenres.genre_id) limit 10")
-        return  list(db_result)
-    except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
-
-        return 'Something is broken'
 
 def getMovie(idmovie): 
     
@@ -73,7 +38,7 @@ def getMovie(idmovie):
         db_conn = None
         db_conn = db_engine.connect()
         db_result = db_conn.execute("Select * from imdb_movies where movieid = "+ str(idmovie))
-        return  list(db_result)
+        return  db_result.mappings().all()
     except:
         if db_conn is not None:
             db_conn.close()
@@ -90,7 +55,7 @@ def db_listOfMovies():
         db_conn = None
         db_conn = db_engine.connect()
         db_result = db_conn.execute("Select * from imdb_movies LIMIT 10")
-        return  list(db_result)
+        return  db_result.mappings().all()
     except:
         if db_conn is not None:
             db_conn.close()
@@ -101,45 +66,84 @@ def db_listOfMovies():
 
         return 'Something is broken'
 
+
+
+
 def login(username):
     try:
         db_conn = None
         db_conn  = db_engine.connect()
-        db_result = db_conn.execute("select password from customers where username = " + username).one 
-        db_conn.close()
-        return list(db_result)
+        db_result = db_conn.execute("select password from customers where username = '" + username+"'")
+        return db_result.mappings().all()
     except:
         if db_conn is not None:
             db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
         return 'Something is broken'
 
-def db_register(dictuser):
-    username = ['username']
+def checkUsername(username): 
+   
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+
+        db_result = db_conn.execute("select * from customers where username= '"+username+"' ")
+        if(db_result.mappings().all()[0]['username'] == username):
+            db_conn.close()
+            return 'exists'
+        
+        db_conn.close()
+
+        return 'notexists' 
+    except:
+        if db_conn is not None:
+            db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
+        return 'Something is broken'
+
+def register(dictuser): 
+    username = dictuser['username']
     password = dictuser['password']
     email = dictuser['email']
     tarjeta = dictuser['credit_card']
     direccion = dictuser['adress']
     balance = dictuser['saldo']
 
+
+    print(username, file=sys.stdout)
+    print(password, file=sys.stdout)
+    print(email, file=sys.stdout)
+    print(tarjeta, file=sys.stdout)
+    print(direccion, file=sys.stdout)
+    print(balance, file=sys.stdout)
+    
     try:
         db_conn = None
         db_conn = db_engine.connect()
-        db_result = db_conn.execute("select * from customers where username= "+username)
 
-        if len(list(db_result)) > 0:
-            return 'Something is broken'
-
-        if username != "" :
-            customerid = db_conn.execute("select customerid from customers order by customerid desc limit 1;")
-            db_result = db_conn.execute("insert into customers values('"+ str(customerid.fetchone() + 1) +"','"+str(direccion)+"','"+str(email)+ "','"+str(tarjeta)+"','"+str(username)+"','"+str(password)+"','"+str(balance)+"');" ) 
-            db_conn.close()
+        db_result = db_conn.execute("select customerid from customers order by customerid desc limit 1;")
+        customid=db_result.mappings().all()
+        db_result = db_conn.execute("insert into customers values('"+ str(int(customid[0]['customerid']) + 1) +"','"+str(direccion)+"','"+str(email)+ "','"+str(tarjeta)+"','"+str(username)+"','"+str(password)+"','"+str(balance)+"')" ) 
 
         db_conn.close()
-        return 1
 
+        return 'good' 
     except:
         if db_conn is not None:
             db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
         return 'Something is broken'
 
 def topSales():
@@ -148,7 +152,7 @@ def topSales():
         db_conn = db_engine.connect()
         db_result = db_conn.execute("select * from getTopSales(2021,2022) limit 10;")
         db_conn.close()
-        return  list(db_result)
+        return  db_result.mappings().all()
 
     except:
         if db_conn is not None:

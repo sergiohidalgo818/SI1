@@ -20,9 +20,8 @@
 
 
 
-
     <form action="" method="post">
-          <input id="estrella1" type="radio" name="estrellas" value="1">
+        <input id="estrella1" type="radio" name="estrellas" value="1">
             <stars><label for="estrella1">★</label></stars>
             <input id="estrella2" type="radio" name="estrellas" value="2">
             <stars><label for="estrella2">★</label></stars>
@@ -32,10 +31,13 @@
             <stars><label for="estrella4">★</label></stars>
             <stars><input id="estrella5" type="radio" name="estrellas" value="5">
             <stars><label for="estrella5">★</label></stars>
-            <button name="submit" value="{{ item.movieid }}">Submit</button>
+        {% if not session['usuario'] %}
+        <button name="submit" title="You need to be loged in" value="{{ item.movieid }}" disabled="true">Submit</button>
+        {% else %}
+        <button name="submit" value="{{ item.movieid }}">Submit</button>
+        {% endif%}
+        
     </form>
-
-
 
     <form action="" method="post">
         <button name="add_to_cart" value="{{ item.movieid }}">Add to cart</button>
